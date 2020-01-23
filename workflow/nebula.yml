@@ -1,0 +1,13 @@
+version: v1
+description: "Workflow to run a deployment via DeployHub"
+steps: 
+  - 
+    image: "projectnebula/kaniko:latest"
+    name: kaniko
+    spec: 
+      context: /
+      destination: "quay.io/hipsterstore/adservice:latest"
+      git: 
+        branch: master
+        name: store-adservice
+        repository: https://github.com/ortelius/store-adservice
