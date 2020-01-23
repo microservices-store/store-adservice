@@ -1,0 +1,37 @@
+steps:
+# Build the image and save details as part of the LABEL
+
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: sh
+  args: ['-c', "docker build -f src/adservice/Dockerfile --tag=quay.io/hipsterstore/adservice:v0.1.1-4-g$SHORT_SHA --build-arg BLDDATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --build-arg REPO_NAME=$REPO_NAME --build-arg COMMIT_SHA=$COMMIT_SHA --build-arg GIT_TAG=$(git describe --tags --exact-match || git symbolic-ref -q --short HEAD) src/adservice"]
+
+# Login to Quay for push.
+# PASSWORD is decrypted before this step runs.
+# Note: You need a shell to resolve environment variables with $$
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args: ['-c', 'docker login --username=$$USERID --password=$$PASSWORD quay.io']
+  secretEnv: ['USERID', 'PASSWORD']
+
+# Push the image to Quay.
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'quay.io/hipsterstore/adservice:v0.1.1-4-g$SHORT_SHA']
+
+- name: 'quay.io/deployhub/compupdate'
+  args: ['python', '/opt/deployhub/scripts/compupdate.py','--dhurl', 'https://console.deployhub.com', '--dhuser', '$$DH_USERID', '--dhpass', '$$DH_PASSWORD', '--compname', 'adservice', '--compvariant', 'v0_1_8_9', '--compversion', 'g$SHORT_SHA', '--compattr', 'DockerSha=[IMAGE_NAME]', '--compattr', 'DockerRepo=quay.io', '--compattr', 'GitCommit=$SHORT_SHA']
+  secretEnv: ['DH_USERID', 'DH_PASSWORD']
+
+secrets:
+- kmsKeyName: projects/eighth-physics-169321/locations/global/keyRings/cli/cryptoKeys/quay
+  secretEnv:
+    USERID: CiQAW+P1J9UZz+Hr1uonladAW2dKqaiVd5ux8Q9EV81pK0u5V+4SNACcBdnKacvH4QXPamH1N4uJZvZ/0TMwvELgXAAlP0wR2zBw2WhCV82GMiUkW3iGVlbqz7c=
+- kmsKeyName: projects/eighth-physics-169321/locations/global/keyRings/cli/cryptoKeys/quay-pw
+  secretEnv:
+    PASSWORD: CiQAUULEud9Ej8XtwNAb9gkbDVhSGFZYhUGE30fNwR+7ehAOkH8SMgCz6KYeykjgS16RPxgKlrIQL/1TKDt06v4OXGIisFXOkdWC+jvdda8mTzVNCi8sT5g6 
+- kmsKeyName: projects/eighth-physics-169321/locations/global/keyRings/cli/cryptoKeys/deployhub-id
+  secretEnv:
+    DH_USERID: CiQAWaYEU4nkdjNznYFaHubYQf+lQm6T0URfs+yBbIKx8lsOkisSMgC/Ky27ZVNGq5EeijDkQN8tYoeTghwvLIdw6hI2P2chP4MeHUr35xPAAQY+29XLE9aR
+- kmsKeyName: projects/eighth-physics-169321/locations/global/keyRings/cli/cryptoKeys/deployhub-pw
+  secretEnv:
+    DH_PASSWORD: CiQAJVcuyUzsA6cRs1jf2YpjjQ8GO9VVcvG3GRqQisz3YYAJBvcSLgBByiFzMalaG2wls+Oq65oRzjLsXBWfnqObbz0T2Xe9KvXZO9B/qj4e52hWPU4=
+
