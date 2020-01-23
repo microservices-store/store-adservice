@@ -2,7 +2,7 @@ version: v1
 description: "Workflow to run a deployment via DeployHub"
 steps: 
   - 
-    image: "projectnebula/kaniko:latest"
+    image: "deployhub/kaniko:latest"
     name: kaniko
     spec: 
       context: /
