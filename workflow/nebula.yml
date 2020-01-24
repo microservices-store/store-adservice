@@ -1,12 +1,12 @@
 version: v1
-description: "Workflow to run a deployment via DeployHub"
+description: "Build Ad Microservice (Java)"
 steps: 
   - 
     image: "deployhub/kaniko:latest"
     name: kaniko
     spec: 
       context: /
-      destination: "quay.io/hipsterstore/adservice:latest"
+      destination: "deployhub/adservice:latest"
       git: 
         branch: master
         name: store-adservice
