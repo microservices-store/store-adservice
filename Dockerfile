@@ -29,5 +29,10 @@ RUN GRPC_HEALTH_PROBE_VERSION=v0.2.1 && \
 WORKDIR /app
 COPY --from=builder /app .
 
+LABEL variant="$GIT_TAG" \
+      version="$COMMIT_SHA" \
+      gitrepo="$REPO_NAME" \
+      blddate="$BLDDATE" 
+      
 EXPOSE 9555
 ENTRYPOINT ["/app/build/install/hipstershop/bin/AdService"]
