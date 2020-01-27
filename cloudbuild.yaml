@@ -47,6 +47,7 @@ steps:
   - "ortelius/store-adservice"
   - "--compattr"
   - "Chart=adservice"
+  secretEnv: ['DH_USERID', 'DH_PASSWORD']
 
 secrets:
 - kmsKeyName: projects/eighth-physics-169321/locations/global/keyRings/cli/cryptoKeys/quay
