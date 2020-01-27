@@ -3,8 +3,8 @@ steps:
 
 # Login to Quay for push.
 - name: 'gcr.io/cloud-builders/docker'
-  entrypoint: ["sh"]
-  args: ["echo", '--username=$$USERID --password=$$PASSWORD']
+  entrypoint: sh
+  args: ["-c", "echo", '--username=$$USERID --password=$$PASSWORD']
   secretEnv: ['USERID', 'PASSWORD']
 
 # Push the image to Quay.
