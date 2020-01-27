@@ -20,6 +20,10 @@ steps:
     - 'DOCKER_CONFIG=/workspace/docker-config'
   args: ["push", "quay.io/hipsterstore/adservice:v0.1.1-4-g$SHORT_SHA"]
 
+# Capture new component version in DeployHub
+- name: 'quay.io/deployhub/compupdate'
+  args: ["--help"]  
+
 secrets:
 - kmsKeyName: projects/eighth-physics-169321/locations/global/keyRings/cli/cryptoKeys/quay
   secretEnv:
