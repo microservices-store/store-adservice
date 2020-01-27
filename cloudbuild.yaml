@@ -22,7 +22,7 @@ steps:
 
 # Capture new component version in DeployHub
 - name: 'quay.io/deployhub/compupdate'
-entrypoint: 'bash'
+  entrypoint: 'bash'
   args: ['-c', 'env']
   secretEnv: ['DHUSER', 'DHPASS']
 
