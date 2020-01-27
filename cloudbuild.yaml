@@ -4,5 +4,5 @@ steps:
   entrypoint: 'bash'
   env:
     - 'DOCKER_CONFIG=/workspace/docker-config'
-  args: ["-c", "export GIT_TAG=$(git describe --tags --exact-match || git symbolic-ref -q --short HEAD);env"]
+  args: ["-c", "ls -lRa"]
   
