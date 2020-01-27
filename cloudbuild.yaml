@@ -4,28 +4,5 @@ steps:
   entrypoint: 'bash'
   env:
     - 'DOCKER_CONFIG=/workspace/docker-config'
-  args: ["-c", "docker build --tag quay.io/hipsterstore/adservice:v0.1.1-4-g$SHORT_SHA --build-arg BLDDATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --build-arg REPO_NAME=$REPO_NAME --build-arg COMMIT_SHA=$COMMIT_SHA --build-arg GIT_TAG=$(git describe --tags --exact-match || git symbolic-ref -q --short HEAD) ."]
+  args: ["-c", "GIT_TAG=$(git describe --tags --exact-match || git symbolic-ref -q --short HEAD); echo $GIT_TAG"]
   
-# Login to Quay for push.
-# PASSWORD is decrypted before this step runs.
-# Note: You need a shell to resolve environment variables with $$
-- name: 'gcr.io/cloud-builders/docker'
-  entrypoint: 'bash'
-  env:
-    - 'DOCKER_CONFIG=/workspace/docker-config'
-  args: ['-c', 'docker login quay.io --username "$$QUAY_USERID" --password $$QUAY_PASSWORD']
-  secretEnv: ['QUAY_USERID', 'QUAY_PASSWORD']
-
-# Push the image to Quay.
-- name: 'gcr.io/cloud-builders/docker'
-  env:
-    - 'DOCKER_CONFIG=/workspace/docker-config'
-  args: ["push", "quay.io/hipsterstore/adservice:v0.1.1-4-g$SHORT_SHA"]
-
-secrets:
-- kmsKeyName: projects/eighth-physics-169321/locations/global/keyRings/cli/cryptoKeys/quay
-  secretEnv:
-    QUAY_USERID: CiQAW+P1J9UZz+Hr1uonladAW2dKqaiVd5ux8Q9EV81pK0u5V+4SNACcBdnKacvH4QXPamH1N4uJZvZ/0TMwvELgXAAlP0wR2zBw2WhCV82GMiUkW3iGVlbqz7c=
-- kmsKeyName: projects/eighth-physics-169321/locations/global/keyRings/cli/cryptoKeys/quay-pw
-  secretEnv:
-    QUAY_PASSWORD: CiQAUULEud9Ej8XtwNAb9gkbDVhSGFZYhUGE30fNwR+7ehAOkH8SMgCz6KYeykjgS16RPxgKlrIQL/1TKDt06v4OXGIisFXOkdWC+jvdda8mTzVNCi8sT5g6 
