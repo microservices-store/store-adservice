@@ -1,5 +1,7 @@
 steps:
 # Build the image and save details as part of the LABEL
+- name: 'gcr.io/cloud-builders/git'
+  args: ['clone', '--depth', '1', 'https://github.com/ortelius/store-adservice.git']
 - name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'bash'
   env:
