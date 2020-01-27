@@ -12,9 +12,14 @@ RUN chmod +x gradlew
 RUN ./gradlew installDist
 
 FROM openjdk:8-slim
-ARG GIT_TAG
+ARG REPO_NAME
 ARG COMMIT_SHA
-ARG REPO_NAME 
+ARG SHORT_SHA
+ARG PROJECT_ID
+ARG BUILD_ID
+ARG BRANCH_NAME
+ARG TAG_NAME
+ARG REVISION_ID
 ARG BLDDATE
 
 # Download Stackdriver Profiler Java agent
@@ -33,10 +38,15 @@ RUN GRPC_HEALTH_PROBE_VERSION=v0.2.1 && \
 WORKDIR /app
 COPY --from=builder /app .
 
-LABEL variant=$GIT_TAG \
-      version=$COMMIT_SHA \
-      gitrepo=$REPO_NAME \
-      blddate=$BLDDATE
+LABEL REPO_NAME=$REPO_NAME \
+    COMMIT_SHA=$COMMIT_SHA \
+    SHORT_SHA=$SHORT_SHA \
+    PROJECT_ID=$PROJECT_ID \
+    BUILD_ID=$BUILD_ID \
+    BRANCH_NAME=$BRANCH_NAME \
+    TAG_NAME=$TAG_NAME \
+    REVISION_ID=$REVISION_ID \
+    BLDDATE=$BLDDATE
       
 EXPOSE 9555
 ENTRYPOINT ["/app/build/install/hipstershop/bin/AdService"]
