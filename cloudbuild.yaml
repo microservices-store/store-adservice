@@ -2,7 +2,7 @@ steps:
 # Use git clone instead of the tarball that google grabs
 - name: 'gcr.io/cloud-builders/git'
   entrypoint: 'bash'	
-  args: ["-c", "rm -rf /workspace/*;ls -lRa;git clone --depth 1  https://github.com/ortelius/store-adservice.git ."]
+  args: ["-c", "rm -rf /workspace/*;rm -rf /workspace/.*;git clone --depth 1  https://github.com/ortelius/store-adservice.git ."]
 # Build the image and save details as part of the LABEL
 - name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'bash'
