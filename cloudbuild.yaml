@@ -22,7 +22,7 @@ steps:
 
 # Capture new component version in DeployHub
 - name: 'quay.io/deployhub/compupdate'
-args: 
+  args: 
   - updatecomp
   - "--dhurl"
   - "https://console.deployhub.com"
