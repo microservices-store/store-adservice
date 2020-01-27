@@ -8,12 +8,12 @@ steps:
 # PASSWORD is decrypted before this step runs.
 # Note: You need a shell to resolve environment variables with $$
 - name: 'gcr.io/cloud-builders/docker'
-  args: ["login --username=$$USERID --password=$$PASSWORD quay.io"]
+  args: ["login", "--username=$$USERID", "--password=$$PASSWORD", "quay.io"]
   secretEnv: ['USERID', 'PASSWORD']
 
 # Push the image to Quay.
 - name: 'gcr.io/cloud-builders/docker'
-  args: ["push quay.io/hipsterstore/adservice:v0.1.1-4-g$SHORT_SHA"]
+  args: ["push", "quay.io/hipsterstore/adservice:v0.1.1-4-g$SHORT_SHA"]
 
 secrets:
 - kmsKeyName: projects/eighth-physics-169321/locations/global/keyRings/cli/cryptoKeys/quay
