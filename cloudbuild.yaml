@@ -5,10 +5,8 @@ steps:
   args: ["build", "--tag=quay.io/hipsterstore/adservice:v0.1.1-4-g$SHORT_SHA", "--build-arg", "BLDDATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')", "--build-arg", "REPO_NAME=$REPO_NAME", "--build-arg", "COMMIT_SHA=$COMMIT_SHA", "."]
 
 # Login to Quay for push.
-# PASSWORD is decrypted before this step runs.
-# Note: You need a shell to resolve environment variables with $$
 - name: 'gcr.io/cloud-builders/docker'
-  args: ["login", "--username=$$USERID", "--password=$$PASSWORD", "quay.io"]
+  args: ["login", "--username=$$USERID", '--password=$$PASSWORD', "quay.io"]
   secretEnv: ['USERID', 'PASSWORD']
 
 # Push the image to Quay.
