@@ -2,7 +2,7 @@ steps:
 # Build the image and save details as part of the LABEL
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ["build", "-f", "/Dockerfile", "--tag=quay.io/hipsterstore/adservice:v0.1.1-4-g$SHORT_SHA", "/"]
+  args: ["build", "--tag=quay.io/hipsterstore/adservice:v0.1.1-4-g$SHORT_SHA", "/"]
 
 # Login to Quay for push.
 # PASSWORD is decrypted before this step runs.
