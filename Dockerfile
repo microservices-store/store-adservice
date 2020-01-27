@@ -12,6 +12,10 @@ RUN chmod +x gradlew
 RUN ./gradlew installDist
 
 FROM openjdk:8-slim
+ARG GIT_TAG
+ARG COMMIT_SHA
+ARG REPO_NAME 
+ARG BLDDATE
 
 # Download Stackdriver Profiler Java agent
 RUN apt-get -y update && apt-get install -qqy \
@@ -28,8 +32,6 @@ RUN GRPC_HEALTH_PROBE_VERSION=v0.2.1 && \
 
 WORKDIR /app
 COPY --from=builder /app .
-
-RUN echo variant="$GIT_TAG" version="$COMMIT_SHA" gitrepo="$REPO_NAME" blddate="$BLDDATE" 
 
 LABEL variant=$GIT_TAG \
       version=$COMMIT_SHA \
