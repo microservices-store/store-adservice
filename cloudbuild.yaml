@@ -26,10 +26,6 @@ steps:
   - updatecomp
   - "--dhurl"
   - "https://console.deployhub.com"
-  - "--dhuser"
-  - "$DH_USERID"
-  - "--dhpass"
-  - "$DH_PASSWORD"
   - "--appname"
   - "Webstore;July 4th Sale"
   - "--appversion"
@@ -47,7 +43,7 @@ steps:
   - "ortelius/store-adservice"
   - "--compattr"
   - "Chart=adservice"
-  secretEnv: ['DH_USERID', 'DH_PASSWORD']
+  secretEnv: ['DHUSER', 'DHPASS']
 
 secrets:
 - kmsKeyName: projects/eighth-physics-169321/locations/global/keyRings/cli/cryptoKeys/quay
@@ -58,8 +54,8 @@ secrets:
     QUAY_PASSWORD: CiQAUULEud9Ej8XtwNAb9gkbDVhSGFZYhUGE30fNwR+7ehAOkH8SMgCz6KYeykjgS16RPxgKlrIQL/1TKDt06v4OXGIisFXOkdWC+jvdda8mTzVNCi8sT5g6 
 - kmsKeyName: projects/eighth-physics-169321/locations/global/keyRings/cli/cryptoKeys/deployhub-id
   secretEnv:
-    DH_USERID: CiQAWaYEUxvyFOXQ9sTfQV7oQVnYbo8dnBtBBGu68nZ5t5PwyfASMQC/Ky27lzG8D0+MSmMiAOJyAcyV+wJqbPeb0EiDpMFmRQLfUiO16v6IzAyImyMOA2U=
+    DHUSER: CiQAWaYEUxvyFOXQ9sTfQV7oQVnYbo8dnBtBBGu68nZ5t5PwyfASMQC/Ky27lzG8D0+MSmMiAOJyAcyV+wJqbPeb0EiDpMFmRQLfUiO16v6IzAyImyMOA2U=
 - kmsKeyName: projects/eighth-physics-169321/locations/global/keyRings/cli/cryptoKeys/deployhub-pw
   secretEnv:
-    DH_PASSWORD: CiQAJVcuyaWuQT/AqWDpmiC8Ncev/wtGYcLMrGLsBqeGac7Ssa0SLwBByiFzFczptdw9H/By8UYGABrmrhidRwNh0P65xRVc7U0zhKIKhlFiPMYNqo9z 
+    DHPASS: CiQAJVcuyaWuQT/AqWDpmiC8Ncev/wtGYcLMrGLsBqeGac7Ssa0SLwBByiFzFczptdw9H/By8UYGABrmrhidRwNh0P65xRVc7U0zhKIKhlFiPMYNqo9z 
   
