@@ -4,7 +4,7 @@ steps:
   entrypoint: 'bash'
   env:
     - 'DOCKER_CONFIG=/workspace/docker-config'
-  args: ["-c", 'docker build --tag quay.io/hipsterstore/adservice:v0.1.1-4-g$SHORT_SHA --build-arg BLDDATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --build-arg REPO_NAME=$REPO_NAME --build-arg COMMIT_SHA=$COMMIT_SHA --build-arg GIT_TAG=$(git describe --tags --exact-match || git symbolic-ref -q --short HEAD) .']
+  args: ["-c", "docker build --tag quay.io/hipsterstore/adservice:v0.1.1-4-g$SHORT_SHA --build-arg BLDDATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --build-arg REPO_NAME=$REPO_NAME --build-arg COMMIT_SHA=$COMMIT_SHA --build-arg GIT_TAG=$(git describe --tags --exact-match || git symbolic-ref -q --short HEAD) ."]
   
 # Login to Quay for push.
 # PASSWORD is decrypted before this step runs.
