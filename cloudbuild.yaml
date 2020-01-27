@@ -5,17 +5,22 @@ steps:
 # PASSWORD is decrypted before this step runs.
 # Note: You need a shell to resolve environment variables with $$
 - name: 'gcr.io/cloud-builders/docker'
-  args: ["login", "--username=$$USERID", '--password=$$PASSWORD', "quay.io"]
-  secretEnv: ['USERID', 'PASSWORD']
+  entrypoint: 'bash'
+  env:
+    - 'DOCKER_CONFIG=/workspace/docker-config'
+  args: ['-c', 'docker login quay.io --username "$$QUAY_USERNAME" --password $$QUAY_PASSWORD']
+  secretEnv: ['QUAY_USERID', 'QUAY_PASSWORD']
 
 # Push the image to Quay.
 - name: 'gcr.io/cloud-builders/docker'
+  env:
+    - 'DOCKER_CONFIG=/workspace/docker-config'
   args: ["push", "quay.io/hipsterstore/adservice:v0.1.1-4-g$SHORT_SHA"]
 
 secrets:
 - kmsKeyName: projects/eighth-physics-169321/locations/global/keyRings/cli/cryptoKeys/quay
   secretEnv:
-    USERID: CiQAW+P1J9UZz+Hr1uonladAW2dKqaiVd5ux8Q9EV81pK0u5V+4SNACcBdnKacvH4QXPamH1N4uJZvZ/0TMwvELgXAAlP0wR2zBw2WhCV82GMiUkW3iGVlbqz7c=
+    QUAY_USERID: CiQAW+P1J9UZz+Hr1uonladAW2dKqaiVd5ux8Q9EV81pK0u5V+4SNACcBdnKacvH4QXPamH1N4uJZvZ/0TMwvELgXAAlP0wR2zBw2WhCV82GMiUkW3iGVlbqz7c=
 - kmsKeyName: projects/eighth-physics-169321/locations/global/keyRings/cli/cryptoKeys/quay-pw
   secretEnv:
-    PASSWORD: CiQAUULEud9Ej8XtwNAb9gkbDVhSGFZYhUGE30fNwR+7ehAOkH8SMgCz6KYeykjgS16RPxgKlrIQL/1TKDt06v4OXGIisFXOkdWC+jvdda8mTzVNCi8sT5g6 
+    QUAY_PASSWORD: CiQAUULEud9Ej8XtwNAb9gkbDVhSGFZYhUGE30fNwR+7ehAOkH8SMgCz6KYeykjgS16RPxgKlrIQL/1TKDt06v4OXGIisFXOkdWC+jvdda8mTzVNCi8sT5g6 
