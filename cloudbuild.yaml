@@ -2,9 +2,10 @@ steps:
 # Build the image and save details as part of the LABEL
 
 # Login to Quay for push.
-- name: 'alpine'
-  entrypoint: sh
-  args: ["-c", "env"]
+# PASSWORD is decrypted before this step runs.
+# Note: You need a shell to resolve environment variables with $$
+- name: 'gcr.io/cloud-builders/docker'
+  args: ["login", "--username=$$USERID", '--password=$$PASSWORD', "quay.io"]
   secretEnv: ['USERID', 'PASSWORD']
 
 # Push the image to Quay.
