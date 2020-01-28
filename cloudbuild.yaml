@@ -2,7 +2,7 @@ steps:
   # Build the image and save details as part of the LABEL
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
-    args: ["-c", "docker build --tag quay.io/hipsterstore/adservice:v0.1.1-4-g$SHORT_SHA --build-arg BLDDATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --build-arg REPO_NAME=$REPO_NAME --build-arg COMMIT_SHA=$COMMIT_SHA --build-arg SHORT_SHA=$SHORT_SHA --build-arg PROJECT_ID=$PROJECT_ID --build-arg BUILD_ID=$BUILD_ID --build-arg BRANCH_NAME=$BRANCH_NAME --build-arg TAG_NAME=$TAG_NAME --build-arg REVISION_ID=$REVISION_ID ."]
+    args: ["-c", "docker build --tag quay.io/hipsterstore/adservice:master-v0.1.1-4-g$SHORT_SHA --build-arg BLDDATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --build-arg REPO_NAME=$REPO_NAME --build-arg COMMIT_SHA=$COMMIT_SHA --build-arg SHORT_SHA=$SHORT_SHA --build-arg PROJECT_ID=$PROJECT_ID --build-arg BUILD_ID=$BUILD_ID --build-arg BRANCH_NAME=$BRANCH_NAME --build-arg TAG_NAME=$TAG_NAME --build-arg REVISION_ID=$REVISION_ID ."]
     
   # Login to Quay for push.
   # PASSWORD is decrypted before this step runs.
@@ -18,12 +18,33 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     env:
       - 'DOCKER_CONFIG=/workspace/docker-config'
-    args: ["push", "quay.io/hipsterstore/adservice:v0.1.1-4-g$SHORT_SHA"]
+    args: ["push", "quay.io/hipsterstore/adservice:master-v0.1.1-4-g$SHORT_SHA"]
 
-# Capture new component version in DeployHub
+  # Get image id
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    env:
+      - 'DOCKER_CONFIG=/workspace/docker-config'
+    args: ['-c', "docker images quay.io/hipsterstore/adservice:master-v0.1.1-4-g$SHORT_SHA -q > /workspace/imageid.txt" ]
+
+  # Capture new component version in DeployHub
   - name: 'quay.io/deployhub/compupdate'
     secretEnv: ['DHUSER', 'DHPASS']
-    args: ["updatecomp", "--dhurl", "https://console.deployhub.com", "--appname", "GLOBAL.Chasing Horses LLC.Vintage LLC.Hipster Store.Webstore;July 4th Sale", "--appversion", "1.2.9.1", "--compname", "GLOBAL.Chasing Horses LLC.Vintage LLC.Hipster Store.adservice", "--compversion", "v0.1.1-4-g$SHORT_SHA", "--docker", "--compattr", "GitCommit:$SHORT_SHA", "--compattr", "GitUrl:https://github.com/ortelius/store-adservice", "--compattr", "GitRepo:ortelius/store-adservice", "--compattr", "Chart:adservice"]
+    args: ["updatecomp", 
+      "--dhurl", "https://console.deployhub.com", 
+      "--appname", "GLOBAL.Chasing Horses LLC.Vintage LLC.Hipster Store.Webstore;July 4th Sale", 
+      "--appversion", "1.2.9.1", 
+      "--compname", "GLOBAL.Chasing Horses LLC.Vintage LLC.Hipster Store.adservice", 
+      "--compversion", "v0.1.1-4-g$SHORT_SHA", 
+      "--docker", 
+      "--compattr", "GitCommit:$SHORT_SHA", 
+      "--compattr", "GitUrl:https://github.com/ortelius/store-adservice", 
+      "--compattr", "GitRepo:ortelius/store-adservice", 
+      "--compattr", "Chart:adservice",
+      "--compattr", "DockerSha:$(cat /workspace/imageid.txt)",
+      "--compattr", "DockerBuildDate:$(date -u +'%Y-%m-%dT%H:%M')",
+      "--compattr", "DockerRepo:quay.io/hipsterstore/adservice",
+      "--compattr", "BuildId:$BUILD_ID"]
 
 secrets:
 - kmsKeyName: projects/eighth-physics-169321/locations/global/keyRings/cli/cryptoKeys/quay
