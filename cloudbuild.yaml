@@ -23,7 +23,7 @@ steps:
 # Capture new component version in DeployHub
   - name: 'quay.io/deployhub/compupdate'
     secretEnv: ['DHUSER', 'DHPASS']
-    args: ["updatecomp", "--dhurl", "https://console.deployhub.com", "--appname", "Webstore;July 4th Sale", "--appversion", "1.2.9.1", "--compname", "adservice", "--compversion", "v0.1.1-4-g$SHORT_SHA", "--docker", "--compattr", "GitCommit:$SHORT_SHA", "--compattr", "GitUrl:https://github.com/ortelius/store-adservice", "--compattr", "GitRepo:ortelius/store-adservice", "--compattr", "Chart:adservice"]
+    args: ["updatecomp", "--dhurl", "https://console.deployhub.com", "--appname", "GLOBAL.Chasing Horses LLC.Vintage LLC.Hipster Store.Webstore;July 4th Sale", "--appversion", "1.2.9.1", "--compname", "adservice", "--compversion", "v0.1.1-4-g$SHORT_SHA", "--docker", "--compattr", "GitCommit:$SHORT_SHA", "--compattr", "GitUrl:https://github.com/ortelius/store-adservice", "--compattr", "GitRepo:ortelius/store-adservice", "--compattr", "Chart:adservice"]
 
 secrets:
 - kmsKeyName: projects/eighth-physics-169321/locations/global/keyRings/cli/cryptoKeys/quay
