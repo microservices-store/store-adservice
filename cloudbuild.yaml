@@ -20,11 +20,6 @@ steps:
     - 'DOCKER_CONFIG=/workspace/docker-config'
   args: ["push", "quay.io/hipsterstore/adservice:v0.1.1-4-g$SHORT_SHA"]
 
-# Capture new component version in DeployHub
-- name: 'quay.io/deployhub/compupdate'
-  secretEnv: ['DHUSER', 'DHPASS']
-  args: ["updatecomp", "--dhurl", "https://console.deployhub.com", "--appname", "Webstore;July 4th Sale", "--appversion", "1.2.9.1", "--compname", "adservice", "--compversion", "v0.1.1-4-g$SHORT_SHA", "--docker", "--compattr", "GitCommit=$SHORT_SHA", "--compattr", "GitUrl=https://github.com/ortelius/store-adservice", "--compattr", "ortelius/store-adservice", "--compattr", "Chart=adservice"]
-
 secrets:
 - kmsKeyName: projects/eighth-physics-169321/locations/global/keyRings/cli/cryptoKeys/quay
   secretEnv:
