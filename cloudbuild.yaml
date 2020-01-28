@@ -41,8 +41,8 @@ steps:
       "--compattr", "GitUrl:https://github.com/ortelius/store-adservice", 
       "--compattr", "GitRepo:ortelius/store-adservice", 
       "--compattr", "Chart:adservice",
-      "--compattr", "DockerSha:$(cat /workspace/imageid.txt)",
-      "--compattr", "DockerBuildDate:$(date -u +'%Y-%m-%dT%H:%M')",
+      "--compattr", "DockerSha:`cat /workspace/imageid.txt`",
+      "--compattr", "DockerBuildDate:`date -u +'%Y-%m-%dT%H:%M'`",
       "--compattr", "DockerRepo:quay.io/hipsterstore/adservice",
       "--compattr", "BuildId:$BUILD_ID"]
 
