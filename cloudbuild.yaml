@@ -42,7 +42,7 @@ steps:
       "--compattr", "GitRepo:ortelius/store-adservice", 
       "--compattr", "Chart:adservice",
       "--compattr", "DockerSha:@/workspace/imageid.txt",
-      "--compattr", "DockerBuildDate:@/workspace/builddate.txt",
+      "--compattr", "DockerBuildDate:@/workspace/blddate.txt",
       "--compattr", "DockerRepo:quay.io/hipsterstore/adservice",
       "--compattr", "BuildId:$BUILD_ID"]
 
