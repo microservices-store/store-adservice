@@ -31,8 +31,8 @@ steps:
   - name: 'quay.io/deployhub/compupdate'
     secretEnv: ['DHUSER', 'DHPASS']
     env:
-      - 'DOCKERBUILDDATE=$(date -u +'%Y-%m-%dT%H:%M')'
-      - 'DOCKERSHA=$(cat /workspace/imageid.txt)'
+      - "DOCKERBUILDDATE=$(date -u +'%Y-%m-%dT%H:%M')"
+      - "DOCKERSHA=$(cat /workspace/imageid.txt)"
     args: ["updatecomp", 
       "--dhurl", "https://console.deployhub.com", 
       "--appname", "GLOBAL.Chasing Horses LLC.Vintage LLC.Hipster Store.Webstore;July 4th Sale", 
