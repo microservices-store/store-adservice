@@ -30,6 +30,9 @@ steps:
   # Capture new component version in DeployHub
   - name: 'quay.io/deployhub/compupdate'
     secretEnv: ['DHUSER', 'DHPASS']
+    env:
+      - 'DOCKERBUILDDATE=$(date -u +'%Y-%m-%dT%H:%M')'
+      - 'DOCKERSHA=$(cat /workspace/imageid.txt)'
     args: ["updatecomp", 
       "--dhurl", "https://console.deployhub.com", 
       "--appname", "GLOBAL.Chasing Horses LLC.Vintage LLC.Hipster Store.Webstore;July 4th Sale", 
@@ -41,8 +44,8 @@ steps:
       "--compattr", "GitUrl:https://github.com/ortelius/store-adservice", 
       "--compattr", "GitRepo:ortelius/store-adservice", 
       "--compattr", "Chart:adservice",
-      "--compattr", "DockerSha:`cat /workspace/imageid.txt`",
-      "--compattr", "DockerBuildDate:`date -u +'%Y-%m-%dT%H:%M'`",
+      "--compattr", "DockerSha:$DOCKERSHA",
+      "--compattr", "DockerBuildDate:$DOCKERBUILDDATE",
       "--compattr", "DockerRepo:quay.io/hipsterstore/adservice",
       "--compattr", "BuildId:$BUILD_ID"]
 
