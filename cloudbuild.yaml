@@ -2,7 +2,7 @@ steps:
   # Build the image and save details as part of the LABEL
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
-    args: ["-c", "docker build --tag quay.io/hipsterstore/adservice:master-v0.1.1-4-g$SHORT_SHA --build-arg BLDDATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --build-arg REPO_NAME=$REPO_NAME --build-arg COMMIT_SHA=$COMMIT_SHA --build-arg SHORT_SHA=$SHORT_SHA --build-arg PROJECT_ID=$PROJECT_ID --build-arg BUILD_ID=$BUILD_ID --build-arg BRANCH_NAME=$BRANCH_NAME --build-arg TAG_NAME=$TAG_NAME --build-arg REVISION_ID=$REVISION_ID ."]
+    args: ["-c", "BLDDATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') && echo $$BLDDATE > /workspace/blddate.txt && docker build --tag quay.io/hipsterstore/adservice:master-v0.1.1-4-g$SHORT_SHA --build-arg BLDDATE=$$BLDDATE --build-arg REPO_NAME=$REPO_NAME --build-arg COMMIT_SHA=$COMMIT_SHA --build-arg SHORT_SHA=$SHORT_SHA --build-arg PROJECT_ID=$PROJECT_ID --build-arg BUILD_ID=$BUILD_ID --build-arg BRANCH_NAME=$BRANCH_NAME --build-arg TAG_NAME=$TAG_NAME --build-arg REVISION_ID=$REVISION_ID ."]
     
   # Login to Quay for push.
   # PASSWORD is decrypted before this step runs.
@@ -30,9 +30,6 @@ steps:
   # Capture new component version in DeployHub
   - name: 'quay.io/deployhub/compupdate'
     secretEnv: ['DHUSER', 'DHPASS']
-    env:
-      - "DOCKERBUILDDATE=$(date -u +'%Y-%m-%dT%H:%M')"
-      - "DOCKERSHA=$(cat /workspace/imageid.txt)"
     args: ["updatecomp", 
       "--dhurl", "https://console.deployhub.com", 
       "--appname", "GLOBAL.Chasing Horses LLC.Vintage LLC.Hipster Store.Webstore;July 4th Sale", 
@@ -44,8 +41,8 @@ steps:
       "--compattr", "GitUrl:https://github.com/ortelius/store-adservice", 
       "--compattr", "GitRepo:ortelius/store-adservice", 
       "--compattr", "Chart:adservice",
-      "--compattr", "DockerSha:$$DOCKERSHA",
-      "--compattr", "DockerBuildDate:$$DOCKERBUILDDATE",
+      "--compattr", "DockerSha:@/workspace/imageid.txt",
+      "--compattr", "DockerBuildDate:@/workspace/builddate.txt",
       "--compattr", "DockerRepo:quay.io/hipsterstore/adservice",
       "--compattr", "BuildId:$BUILD_ID"]
 
