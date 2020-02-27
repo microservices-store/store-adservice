@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "adservice.name" . }}
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ include "adservice.name" . }}
+  ports:
+  - name: grpc
+    port: 9555
+    targetPort: 9555

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  {{ include "adservice.name" . }}
+spec:
+  selector:
+    matchLabels:
+      app:  {{ include "adservice.name" . }}
+  template:
+    metadata:
+      labels:
+        app:  {{ include "adservice.name" . }}
+    spec:
+      terminationGracePeriodSeconds: 5
+      containers:
+        - name: {{ include "adservice.name" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }} 
+        ports:
+        - containerPort: 9555
+        env:
+          - name: PORT
+            value: "9555"
+        resources:
+          requests:
+            cpu: 200m
+            memory: 64Mi
+          limits:
+            cpu: 300m
+            memory: 128Mi
+        readinessProbe:
+          initialDelaySeconds: 15
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:9555"]
+        livenessProbe:
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:9555"]
+       

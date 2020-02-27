@@ -1,0 +1,10 @@
+[Component]
+    Components = [
+        { Name = "GLOBAL.Chasing Horses LLC.Vintage LLC.Hipster Store.Ad Service.adservice", Application = "GLOBAL.Chasing Horses LLC.Vintage LLC.Hipster Store.Webstore;July 4th Sale;1.2.9.1"},
+        { Name = "GLOBAL.Chasing Horses LLC.Vintage LLC.Hipster Store.Ad Service.adservice", Application = "GLOBAL.Chasing Horses LLC.Vintage LLC.Hipster Store.Webstore;Labor Day Sale;1.2.10.0"}
+    ]    
+    Version = "1.2.2"
+    ChartName = "chart/adservice"
+    DockerRepo = "quay.io/hipsterstore/adservice"
+    GitUrl = "https://github.com/ortelius/store-adservice"
+    HelmChart = "GLOBAL.HelmChart"
