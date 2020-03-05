@@ -14,7 +14,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: {{ include "adservice.name" . }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.DockerReop }}:{{ .Values.DockerTag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }} 
         ports:
         - containerPort: 9555
