@@ -7,4 +7,4 @@
     ChartName = "chart/adservice"
     DockerRepo = "quay.io/hipsterstore/adservice"
     GitUrl = "https://github.com/ortelius/store-adservice"
-    HelmChart = "GLOBAL.HelmChart"
+    CustomAction = "GLOBAL.HelmChart"
